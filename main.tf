@@ -2,7 +2,7 @@
 locals { 
     owner = "qalcom-exam"
     kube_config = "~/.kube/config"
-    kube_context = "minikube"
+    kube_context = "docker-desktop"
 }
 
 provider "kubernetes" {
