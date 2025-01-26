@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qalcom-env
+  namespace: qalcom-exam
+data:
+  KAFKA_TOPIC: "health_checks_topic"
+  KAFKA_BROKER: "kafka-cluster-kafka-bootstrap:9092"
+  GROUP_ID: "health_check_group"
+
