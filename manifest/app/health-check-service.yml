@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: health-check-service
-  namespace: qalcom-exam
+  namespace: qualcom-task
   labels:
     app: health-check-service
 spec:
@@ -23,4 +23,4 @@ spec:
         name: health-check-service
         envFrom:
           - configMapRef:
-              name: qalcom-env
+              name: qualcom-env

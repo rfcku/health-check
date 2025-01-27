@@ -1,6 +1,6 @@
 
 locals {
-  owner        = "qalcom-exam"
+  owner        = "qualcom-task"
   kube_config  = "~/.kube/config"
   kube_context = "docker-desktop"
 }
@@ -57,9 +57,8 @@ resource "helm_release" "prometheus-stack" {
   namespace = kubernetes_namespace.namespace.metadata.0.name
 }
 
-
-#resource "kubernetes_manifest" "kafka-app" {
-#  for_each = fileset("./manifest/app", "*.yml")
-#  manifest = yamldecode(file("./manifest/app/${each.value}"))
-#}
+resource "kubernetes_manifest" "kafka-app" {
+  for_each = fileset("./manifest/app", "*.yml")
+  manifest = yamldecode(file("./manifest/app/${each.value}"))
+}
 

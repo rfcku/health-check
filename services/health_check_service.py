@@ -7,6 +7,7 @@ import logging
 import time
 from datetime import datetime
 
+import kubernetes
 from confluent_kafka import Producer, Consumer
 from confluent_kafka.cimpl import KafkaError
 from config import PRODUCER_CONFIG, CONSUMER_CONFIG, KAFKA_TOPIC
@@ -15,20 +16,27 @@ logging.basicConfig(level=logging.DEBUG)
 
 def get_data():
     """Function to generate data to be sent to Kafka"""
-    try:
-        config.load_kube_config()
-    except:
-        config.load_incluster_config()
-
-    v1 = client.CoreV1Api()
-
-    pods = v1.list_pod_for_all_namespaces(watch=False)
+    # try:
+    #     kubernetes.config.load_kube_config()
+    # except:
+    #     kubernetes.config.load_incluster_config()
+    #
+    # v1 = kubernetes.client.CoreV1Api()
+    #
+    # pods = v1.list_pod_for_all_namespaces(watch=False)
+    # data = []
+    # for pod in pods.items:
+    #     data.append({
+    #         "serviceName": pod.metadata.name,
+    #         "status": pod.status.phase,
+    #         "timestamp": pod.metadata.creation_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+    #     })
     data = []
-    for pod in pods.items:
+    for i in range(10):
         data.append({
-            "serviceName": pod.metadata.name,
-            "status": pod.status.phase,
-            "timestamp": pod.metadata.creation_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+            "serviceName": "service" + str(i),
+            "status": "Running",
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         })
     return data
 
@@ -91,6 +99,7 @@ class Kafka:
         logging.info("Starting Kafka consumer")
         try:
             self.consumer.subscribe([self.topic])
+            logging.info("Subscribed to topic: %s", self.topic)
             while True:
                 msg = self.consumer.poll(timeout=1.0)
                 if msg is None:
@@ -103,6 +112,7 @@ class Kafka:
                         continue
                 try:
                     message = msg.value().decode("utf-8")
+                    logging.info("Consumed message: %s", message)
                     self.messages.append(message)
                 except Exception as e:
                     logging.error("Error processing message: %s", e)

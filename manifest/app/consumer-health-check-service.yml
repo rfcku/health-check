@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: consumer-health-check-service
-  namespace: qalcom-exam
+  namespace: qualcom-task
 spec:
   ports:
     - port: 9001
