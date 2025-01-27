@@ -19,7 +19,7 @@ spec:
       containers:
       - image: ttl.sh/python-scripts:1h
         imagePullPolicy: Always
-        command: ['python', 'consumer-health-check-service.py']
+        command: ['python', 'consumer_health_check_service.py']
         name: consumer-health-check
         envFrom:
           - configMapRef:

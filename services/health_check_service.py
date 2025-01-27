@@ -6,12 +6,12 @@ import json
 import logging
 import time
 from datetime import datetime
+
 from confluent_kafka import Producer, Consumer
 from confluent_kafka.cimpl import KafkaError
 from config import PRODUCER_CONFIG, CONSUMER_CONFIG, KAFKA_TOPIC
 
 logging.basicConfig(level=logging.DEBUG)
-
 
 def get_data():
     """Function to generate data to be sent to Kafka"""

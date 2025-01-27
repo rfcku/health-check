@@ -19,7 +19,7 @@ spec:
       containers:
       - image: ttl.sh/python-scripts:1h
         imagePullPolicy: Always
-        command: ['python', 'kafka.py']
+        command: ['python', 'health_check_service.py']
         name: health-check-service
         envFrom:
           - configMapRef:
