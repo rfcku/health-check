@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: health-check-producer 
+  name: health-check-service
   namespace: qalcom-exam
   labels:
-    app: health-check-producer
+    app: health-check-service
 spec:
   revisionHistoryLimit: 1
   replicas: 1
   selector:
     matchLabels:
-      app: health-check-producer
+      app: health-check-service
   template:
     metadata:
       labels:
-        app: health-check-producer
+        app: health-check-service
     spec:
       containers:
       - image: ttl.sh/python-scripts:1h
         imagePullPolicy: Always
         command: ['python', 'kafka.py']
-        name: health-check-producer
+        name: health-check-service
         envFrom:
           - configMapRef:
               name: qalcom-env
