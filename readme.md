@@ -49,7 +49,7 @@ terraform plan
 terraform apply
 ```
 ![](https://raw.githubusercontent.com/rfcku/health-check/refs/heads/main/public/Screenshot2025-01-27at13.34.16.png)
-![[https://raw.githubusercontent.com/rfcku/health-check/refs/heads/main/public/Screenshot2025-01-27at13.36.07.png]]
+![](https://raw.githubusercontent.com/rfcku/health-check/refs/heads/main/public/Screenshot2025-01-27at13.36.07.png)
 This will provision:
 
 - Kafka cluster
