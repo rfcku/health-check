@@ -15,11 +15,21 @@ logging.basicConfig(level=logging.DEBUG)
 
 def get_data():
     """Function to generate data to be sent to Kafka"""
-    data = {
-        "serviceName": "MyService",
-        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "status": "OK",
-    }
+    try:
+        config.load_kube_config()
+    except:
+        config.load_incluster_config()
+
+    v1 = client.CoreV1Api()
+
+    pods = v1.list_pod_for_all_namespaces(watch=False)
+    data = []
+    for pod in pods.items:
+        data.append({
+            "serviceName": pod.metadata.name,
+            "status": pod.status.phase,
+            "timestamp": pod.metadata.creation_timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        })
     return data
 
 
@@ -64,11 +74,12 @@ class Kafka:
         logging.info("Starting Kafka producer")
         try:
             while True:
-                data = get_data()
+                pods = get_data()
                 logging.info("Producing message to Kafka")
-                self.producer.produce(
-                    self.topic, json.dumps(data), callback=self.delivery_callback
-                )
+                for data in pods:
+                    self.producer.produce(
+                        self.topic, json.dumps(data), callback=self.delivery_callback
+                    )
                 self.producer.poll(0)
                 self.producer.flush()
                 time.sleep(1)
